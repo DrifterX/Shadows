@@ -1,3 +1,5 @@
+# Shadows
+
 Basic shadow counter UI with recast timers/bars and remaining Shihei.
 
 <img width="135" height="144" alt="image" src="https://github.com/user-attachments/assets/e20095e8-a5d6-40f6-a6a0-eba80d2dd8fa" />
