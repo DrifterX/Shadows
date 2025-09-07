@@ -1,0 +1,16 @@
+{
+    "Lua.diagnostics.globals": [
+        "addon",
+        "T",
+        "AshitaCore",
+        "ashita",
+        "GetPlayerEntity",
+        "ImGuiCond_Always",
+        "bit",
+        "ImGuiWindowFlags_NoDecoration",
+        "ImGuiCol_PlotHistogram"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-field"
+    ]
+}
