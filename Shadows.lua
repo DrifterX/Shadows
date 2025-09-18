@@ -51,9 +51,6 @@ local niRecast = {
     recastTime = 0,
 };
 
-local nonElementalNin = T{
-    {spellName = "Utsusemi", spellId = 338,     itemId = 1179,    itemName = "Shihei"}
-};
 local colorConverter = imgui.ColorConvertU32ToFloat4;
 
 local colors = T{
@@ -80,7 +77,12 @@ local function formatTimestamp(timer, maxTime)
     local displaySeconds = math.ceil(timerInSeconds - (minutes + (hours * 60)) * 60)
     local milliseconds = math.ceil(timerInMilliseconds -  ((seconds * 1000) + (minutes * 60000) + (hours * 60^2 * 1000)));
     local millisecondsFormatted = milliseconds / 10;
-    local returnValue = {}
+    local returnValue = {
+        timer = '',
+        color = {0, 0, 0, 0},
+        remainingTime = 0,
+        recastTime = 0,
+    }
     if(seconds >= 10) then
         returnValue.timer = ('%0.2i:%0.2i'):fmt(minutes, displaySeconds);
         -- 245, 15, 15
@@ -148,7 +150,7 @@ local function getRecastTimer(spell, recastTime)
         if(spellResource ~= nil) then
             spellName = spellResource.Name[1]
         end
-        if (spellName == spell) then
+        if (spellName == spell)  and (timer > 0) then
             if (timer > recastTime) then
                 recastTime = timer
             end
@@ -243,7 +245,7 @@ ashita.events.register('d3d_present', 'shadows_preset', function ()
 	if (player == nil) then -- when zoning
 		return;
 	end
-
+    --local windowSize = {300, 140};
     local windowSize = {123, 140};
     imgui.SetNextWindowBgAlpha(0.9);
     imgui.SetNextWindowSize(windowSize, ImGuiCond_Always);
@@ -253,6 +255,7 @@ ashita.events.register('d3d_present', 'shadows_preset', function ()
         niRecast = getRecastTimer("Utsusemi: Ni", niRecast.recastTime);
         local toolsRemaining = getRemainingTools();
         imgui.SetWindowFontScale(3.3);
+        --imgui.Text("Index ".. tostring(itemName.Id) .. " Container: " .. tostring(container))
         imgui.SetCursorPosX(50); imgui.TextColored(shadowCount.color, "" .. tostring(shadowCount.shadows));
         --imgui.Text("   " .. tostring(shadowCount));
         imgui.Separator();
@@ -264,7 +267,7 @@ ashita.events.register('d3d_present', 'shadows_preset', function ()
         imgui.TextColored(niRecast.color, "Ni:   " .. tostring(niRecast.timer))
         imgui.PopStyleColor(1);
         imgui.Separator();
-        imgui.Text("  Shihei: "); imgui.SameLine(); imgui.SetCursorPosX(imgui.CalcTextSize("  Shihei: "));
+        imgui.Text("  Shihei: "); imgui.SameLine(); imgui.SetCursorPosX(86); -- imgui.CalcTextSize("  Shihei: ") = 84
         imgui.TextColored(toolsRemaining.color, "".. tostring(toolsRemaining.numberOfItems));
     end
     imgui.End();
